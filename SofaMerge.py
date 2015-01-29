@@ -2,7 +2,7 @@
 """
 Combine all the SOFA source files into one module
 
-Example Usage: ./SofaMerge.py '~/sofa/20131202_d/f77/src/' > sofa.f
+Example Usage: ./SofaMerge.py ~/sofa/20131202_d/f77/src/ > sofa.f
 
 Tested with the 2013-12-02 release of SOFA.
 http://www.iausofa.org/current_F.html
