@@ -9,7 +9,7 @@ http://www.iausofa.org/current_F.html
 
 """
 __appname__ = 'SofaMerge.py'
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 __author__  = 'Jacob Williams'
 
 ##########################################
@@ -135,6 +135,7 @@ def cleansofa(srcdir):
 	import glob
 	import time
 	import sys
+	import re
 	
 	module_name = "sofa_module"	
 	div = "***********************************************************************"
@@ -203,23 +204,36 @@ def cleansofa(srcdir):
 				data = data.replace(_sofa_boilerplate,'')
 				data = data.replace(_sofa_finished,'')
 				data = data.replace(_sofa_divider,'')
-				
+								
+				#Remove all the function declarations in the routines:
+				# example: DOUBLE PRECISION iau_ANP	
+				data = data.replace('      DOUBLE PRECISION iau_', c+'     DOUBLE PRECISION iau_')
+				data = data.replace('     :                 iau_', c+'    :                 iau_')
+								
 				#append this routine:
 				module_content = module_content + c+div + '\n' + data + c+div + '\n'+ '\n'
 		
 		else:
 			print('Error parsing file: ' + f)
 			sys.exit(0)
+	
+	##########
+	# Fix the lines like this: '+2004.191898     D0, &'
+	re1='(\\d)'	# Any Single Digit
+	re2='(\\s+)'	# White Space
+	re3='(D)'	# Exponent Character
+	rg = re.compile(re1+re2+re3,re.IGNORECASE|re.DOTALL)
+	for line in module_content.split('\n'):
+		if (line[0:]!='     :'):  #don't print blank continuation lines
+			m = rg.search(line)
+			if m:
+				#remove the whitespace between the number and the 'D'
+				line = line[0:m.span()[0]]+m.group(1)+m.group(3)+line[m.span()[1]:]
+			print(line)
+	##########
+			
+	# Could also include some fixed-to-free conversions here
 		
-	#Remove all the function declarations in the routines:
-	# example: DOUBLE PRECISION iau_ANP	
-	module_content = module_content.replace('      DOUBLE PRECISION iau_', c+'     DOUBLE PRECISION iau_')
-	module_content = module_content.replace('     :                 iau_', c+'    :                 iau_')
-	
-	#  Note: Could also include some fixed-to-free conversions
-	
-	print(module_content)
-	
 	#finished with all the files:
 	print(c+div)
 	print("      end module "+module_name)
