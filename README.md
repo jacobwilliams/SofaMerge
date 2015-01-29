@@ -11,5 +11,5 @@ Usage
 
 The script takes a single argument, which is the location of the SOFA source directory.  For example:
 
-```./SofaMerge.py '~/sofa/20131202_d/f77/src/' > sofa.f```
+```./SofaMerge.py ~/sofa/20131202_d/f77/src/ > sofa.f```
 
