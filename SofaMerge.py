@@ -65,7 +65,7 @@ def cleansofa(srcdir):
 	print("      module "+module_name)
 	print(c+div)
 	print(c)
-	print(c+" this file was automatically generated using the create_sofa_module.py script")
+	print(c+" this file was automatically generated using SofaMerge.py")
 	print(c+" Generated on: " + time.strftime("%c"))
 	print(c)
 	print(c+div)
