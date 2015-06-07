@@ -11,5 +11,10 @@ Usage
 
 The script takes a single argument, which is the location of the SOFA source directory.  For example:
 
-```./SofaMerge.py ~/sofa/20131202_d/f77/src/ > sofa.f```
+```python SofaMerge.py ~/sofa/20150209_a/f77/src/ > sofa.f```
 
+To also convert the file to free-form source, you could then use [fortran-legacy-tools](https://github.com/ylikx/fortran-legacy-tools) like so:
+
+```python fixed2free2.py sofa.f > sofa.f90```
+
+```python flowercase.py sofa.f90 > sofa_module.f90```
