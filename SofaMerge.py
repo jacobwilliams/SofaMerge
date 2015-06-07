@@ -19,7 +19,7 @@ http://www.iausofa.org/current_F.html
 
 """
 __appname__ = 'SofaMerge.py'
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __author__  = 'Jacob Williams'
 
 import glob
@@ -38,7 +38,7 @@ def rreplace(s, old, new, occurrence):
 ##########################################
 
 #the SOFA boilerplate text:
-_sofa_boilerplate_start = '\\*\\+----------------------------------------------------------------------'
+_sofa_boilerplate_start = '\n\\*\\+----------------------------------------------------------------------'
 _sofa_boilerplate_end = '\\*-----------------------------------------------------------------------\n'
 _sofa_boilerplate_re = '('+_sofa_boilerplate_start+')(.*?)('+_sofa_boilerplate_end+')'
 _sofa_boilerplate_rg = re.compile(_sofa_boilerplate_re,re.IGNORECASE|re.DOTALL)
@@ -139,7 +139,15 @@ def cleansofa(srcdir):
 				# example: DOUBLE PRECISION iau_ANP	
 				data = data.replace('      DOUBLE PRECISION iau_', c+'     DOUBLE PRECISION iau_')
 				data = data.replace('     :                 iau_', c+'    :                 iau_')
-								
+				
+				#Also update relational operators:
+				data = data.replace('.GT.','>')
+				data = data.replace('.LT.','<')
+				data = data.replace('.EQ.','==')
+				data = data.replace('.GE.','>=')
+				data = data.replace('.LE.','<=')
+				data = data.replace('.NE.','/=')
+				
 				#append this routine:
 				module_content = module_content + c+div + '\n' + data + c+div + '\n'+ '\n'
 		
@@ -148,20 +156,29 @@ def cleansofa(srcdir):
 			sys.exit(0)
 	
 	##########
+		
 	# Fix the lines like this: '+2004.191898     D0, &'
-	re1='(\\d)'	# Any Single Digit
+	re1='(\\d)'		# Any Single Digit
 	re2='(\\s+)'	# White Space
-	re3='(D)'	# Exponent Character
+	re3='(D)'		# Exponent Character
 	rg = re.compile(re1+re2+re3,re.IGNORECASE|re.DOTALL)
 	for line in module_content.split('\n'):
 		if (line[0:]!='     :'):  #don't print blank continuation lines
-			m = rg.search(line)
-			if m:
-				#remove the whitespace between the number and the 'D'
-				line = line[0:m.span()[0]]+m.group(1)+m.group(3)+line[m.span()[1]:]
+			
+			#skip comment lines:
+			check = True
+			if (len(line)>0): check = (line[0]!='*')
+			
+			if (check):
+				m = rg.search(line)
+				if m:
+					#remove the whitespace between the number and the 'D'
+					line = line[0:m.span()[0]]+m.group(1)+m.group(3)+line[m.span()[1]:]
+			
 			print(line)
+
 	##########
-				
+	
 	#finished with all the files:
 	print(c+div)
 	print("      end module "+module_name)
