@@ -1,13 +1,11 @@
 # SofaMerge
 A simple script to make one module from all the SOFA files.
 
-Description
---------------------
+## Description
 
 This is a little Python script to make your life easier if you are using the Fortran 77 version of the [Standards of Fundamental Astronomy (SOFA) library](https://www.iausofa.org/current-software).  All it does is take the individual files and merge them into one Fortran module file.  It currently makes no attempt to convert the files to free format (although this could easily be added).
 
-Usage
---------------------
+## Usage
 
 The script takes a single argument, which is the location of the SOFA source directory.  For example:
 
@@ -18,3 +16,7 @@ To also convert the file to free-form source, you could then use [fortran-legacy
 ```python fixed2free2.py sofa.f > sofa.f90```
 
 ```python flowercase.py sofa.f90 > sofa_module.f90```
+
+## Links
+ * [IAU SOFA](https://www.iausofa.org/) -- Standards of Fundamental Astronomy website
+ * [IAU_SOFA](https://github.com/jacobwilliams/IAU_SOFA) -- Unofficial mirror of the IAU SOFA Fortran library (with git history)
