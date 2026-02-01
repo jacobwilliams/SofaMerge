@@ -26,6 +26,7 @@ import glob
 import time
 import sys
 import re
+import os
 
 ##########################################
 def rreplace(s, old, new, occurrence):
@@ -52,7 +53,7 @@ _sofa_divider = """* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 """
 
 ##########################################
-def cleansofa(srcdir):
+def cleansofa(srcdir: str):
 	'''main routine : process all the files.'''
 	
 	module_name = "sofa_module"	
@@ -78,7 +79,7 @@ def cleansofa(srcdir):
 	print(" ")
 
 	#get list of files in the directory:
-	html_file_list = sorted(glob.glob(srcdir+"*.for"))
+	html_file_list = sorted(glob.glob(os.path.join(srcdir, "*.for")))
 
 	module_content = ''
 	get_boilerplate = True
